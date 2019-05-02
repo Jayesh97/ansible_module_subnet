@@ -6,14 +6,17 @@ options:
     class_type:
         description:
             - This is the message to send to the sample module
+        type: str
         required: True
     network_ip:
         description:
             - Control to demo if the result of this module is changed or not
+        type: str
         required: True
     hosts:
         description:
             - Total hosts required in the subnet
+        type: str
         required: True
 '''
 
@@ -24,27 +27,26 @@ name: "subnet module"
         class_type: "B"
         network_ip: "172.15.0.0"
         hosts: "1600"
-output: start_ip:
-        end_ip:
 
-# pass in a message and have changed true
-- name: Test with a message and changed output
-  my_new_test_module:
-    name: hello world
-    new: true
 
-# fail the module
-- name: Test failure of the module
-  my_new_test_module:
-    name: fail me
+name: "subnet module"
+    subnet_calculator: 
+        class_type: "C"
+        network_ip: "192.168.10.0"
+        hosts: "25"
+
+
+
 '''
 
 RETURN = '''
-original_message:
-    description: The original name param that was passed in
+start_ip:
+    description: The starting IP of 1st subnet
     type: str
-message:
-    description: The output message that the sample module generates
+
+end_ip:
+    description: The last IP(Broadcast Address) of the 1st subnet
+    type: str
 '''
 
 from ansible.module_utils.basic import AnsibleModule
@@ -177,8 +179,6 @@ def sub_calc():
             module.exit_json(**result)
     else:
         module.exit_json(**result)
-
-
 
 def main():
     sub_calc()
