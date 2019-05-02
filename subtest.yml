@@ -1,0 +1,17 @@
+--- 
+- 
+  name: "test my new module"
+  hosts: local
+  tasks: 
+    - 
+      name: "subnet module"
+      subnet_calculator: 
+        class_type: "B"
+        network_ip: "172.15.0.0"
+        hosts: "1600"
+      register: testout
+    - 
+      name: "dump to output"
+      debug: 
+        msg: "{{ testout }}"
+
